@@ -1,0 +1,99 @@
+{
+  "ServiceDelivery": {
+    "ResponseTimestamp": "2025-01-15T10:02:00Z",
+    "StopMonitoringDelivery": {
+      "MonitoredStopVisit": [
+        {
+          "RecordedAtTime": "2025-01-15T10:01:00Z",
+          "MonitoringRef": "15726",
+          "MonitoredVehicleJourney": {
+            "LineRef": "6",
+            "DirectionRef": "IB",
+            "PublishedLineName": "6-Haight/Parnassus",
+            "DestinationName": "Downtown",
+            "MonitoredCall": {
+              "StopPointRef": "15726",
+              "ExpectedDepartureTime": "2025-01-15T10:05:00Z",
+              "ExpectedArrivalTime": "2025-01-15T10:04:30Z"
+            }
+          }
+        },
+        {
+          "RecordedAtTime": "2025-01-15T10:01:00Z",
+          "MonitoringRef": "15726",
+          "MonitoredVehicleJourney": {
+            "LineRef": "6",
+            "DirectionRef": "IB",
+            "PublishedLineName": "6-Haight/Parnassus",
+            "DestinationName": "Downtown",
+            "MonitoredCall": {
+              "StopPointRef": "15726",
+              "ExpectedDepartureTime": "2025-01-15T10:14:00Z",
+              "ExpectedArrivalTime": "2025-01-15T10:13:30Z"
+            }
+          }
+        },
+        {
+          "RecordedAtTime": "2025-01-15T10:01:00Z",
+          "MonitoringRef": "15726",
+          "MonitoredVehicleJourney": {
+            "LineRef": "6",
+            "DirectionRef": "IB",
+            "PublishedLineName": "6-Haight/Parnassus",
+            "DestinationName": "Downtown",
+            "MonitoredCall": {
+              "StopPointRef": "15726",
+              "ExpectedDepartureTime": "2025-01-15T10:27:00Z",
+              "ExpectedArrivalTime": "2025-01-15T10:26:30Z"
+            }
+          }
+        },
+        {
+          "RecordedAtTime": "2025-01-15T10:01:00Z",
+          "MonitoringRef": "15726",
+          "MonitoredVehicleJourney": {
+            "LineRef": "43",
+            "DirectionRef": "IB",
+            "PublishedLineName": "43-Masonic",
+            "DestinationName": "Downtown",
+            "MonitoredCall": {
+              "StopPointRef": "15726",
+              "ExpectedDepartureTime": "2025-01-15T10:08:00Z",
+              "ExpectedArrivalTime": "2025-01-15T10:07:30Z"
+            }
+          }
+        },
+        {
+          "RecordedAtTime": "2025-01-15T10:01:00Z",
+          "MonitoringRef": "15726",
+          "MonitoredVehicleJourney": {
+            "LineRef": "43",
+            "DirectionRef": "IB",
+            "PublishedLineName": "43-Masonic",
+            "DestinationName": "Downtown",
+            "MonitoredCall": {
+              "StopPointRef": "15726",
+              "ExpectedDepartureTime": "2025-01-15T10:22:00Z",
+              "ExpectedArrivalTime": "2025-01-15T10:21:30Z"
+            }
+          }
+        },
+        {
+          "RecordedAtTime": "2025-01-15T10:01:00Z",
+          "MonitoringRef": "15726",
+          "MonitoredVehicleJourney": {
+            "LineRef": "7",
+            "DirectionRef": "IB",
+            "PublishedLineName": "7-Haight/Noriega",
+            "DestinationName": "Downtown",
+            "MonitoredCall": {
+              "StopPointRef": "15726",
+              "ExpectedDepartureTime": "2025-01-15T10:10:00Z",
+              "ExpectedArrivalTime": "2025-01-15T10:09:30Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

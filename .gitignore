@@ -1,0 +1,7 @@
+.env
+.bundle/
+vendor/bundle/
+*.gem
+.rspec_status
+coverage/
+.DS_Store

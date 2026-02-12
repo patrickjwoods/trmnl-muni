@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SF Muni Departures — TRMNL Preview</title>
+  <link rel="stylesheet" href="https://usetrmnl.com/css/latest/plugins.css">
+  <style>
+    body { background: #e5e5e5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+    .screen { width: 800px; height: 480px; background: #fff; overflow: hidden; box-shadow: 0 2px 20px rgba(0,0,0,0.15); }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="view view--full">
+      <div class="layout layout--col">
+        <div class="columns">
+          <div class="column">
+            <div class="title_bar">
+              <span class="title">SF Muni</span>
+              <span class="instance"><%= @updated_at %></span>
+            </div>
+            <table class="table table--gap-s">
+              <thead>
+                <tr>
+                  <th>Route</th>
+                  <th>Direction</th>
+                  <th>Next Departures</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @routes.each do |route| %>
+                <tr>
+                  <td class="bold"><%= route[:route] %></td>
+                  <td><%= route[:direction] %></td>
+                  <td>
+                    <% if route[:departures].any? %>
+                      <%= route[:departures].map { |d| "#{d[:minutes]}m" }.join(", ") %>
+                    <% else %>
+                      --
+                    <% end %>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

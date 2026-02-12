@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: trmnl-muni
+    runtime: ruby
+    buildCommand: bundle install
+    startCommand: bundle exec puma -C config/puma.rb
+    envVars:
+      - key: API_KEY_511
+        sync: false
+      - key: MUNI_STOPS
+        sync: false
+      - key: MAX_DEPARTURES
+        value: "3"
+      - key: RACK_ENV
+        value: production
