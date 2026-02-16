@@ -1,4 +1,7 @@
-<div class="layout layout--col">
+<style>
+  .muni { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+</style>
+<div class="layout layout--col muni">
   <div class="columns">
     <div class="column">
       <div class="title_bar">
@@ -17,7 +20,7 @@
         <tbody>
           {% for stop in stops %}
             <tr>
-              <td colspan="3" class="bold meta" style="padding-top: 8px;">{{ stop.stop_name }}</td>
+              <td colspan="3" style="padding-top: 8px; font-weight: bold; font-size: 1.1em;">{{ stop.stop_name }}</td>
             </tr>
             {% for line in stop.lines %}
             <tr>

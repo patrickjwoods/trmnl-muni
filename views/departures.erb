@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://usetrmnl.com/css/latest/plugins.css">
   <style>
     body { background: #e5e5e5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-    .screen { width: 800px; height: 480px; background: #fff; overflow: hidden; box-shadow: 0 2px 20px rgba(0,0,0,0.15); }
+    .screen { width: 800px; height: 480px; background: #fff; overflow: hidden; box-shadow: 0 2px 20px rgba(0,0,0,0.15); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
   </style>
 </head>
 <body>
@@ -30,7 +30,7 @@
               <tbody>
                 <% @stops.each do |stop| %>
                   <tr>
-                    <td colspan="3" class="bold meta" style="padding-top: 8px;"><%= stop[:stop_name] %></td>
+                    <td colspan="3" style="padding-top: 8px; font-weight: bold; font-size: 1.1em;"><%= stop[:stop_name] %></td>
                   </tr>
                   <% stop[:lines].each do |line| %>
                   <tr>
