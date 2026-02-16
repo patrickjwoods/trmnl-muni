@@ -1,0 +1,29 @@
+<style>
+  .muni { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  .muni .departures-compact { font-size: 0.85em; }
+</style>
+<div class="layout layout--col muni">
+  <div class="columns">
+    <div class="column">
+      <div class="title_bar">
+        <span class="title">SF Muni</span>
+        <span class="instance">{{ updated_at }}</span>
+      </div>
+      {% for stop in stops %}
+        <div style="font-weight: bold; padding-top: 4px; font-size: 0.9em;">{{ stop.stop_name }}</div>
+        <div class="departures-compact">
+          {% for line in stop.lines %}
+            <div style="padding: 2px 0;">
+              <span class="bold">{{ line.line }}</span>
+              {% if line.departures.size > 0 %}
+                — {% for dep in line.departures limit:2 %}{{ dep.time }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+              {% else %}
+                — --
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

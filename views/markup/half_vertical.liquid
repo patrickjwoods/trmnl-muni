@@ -1,0 +1,41 @@
+<style>
+  .muni { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+</style>
+<div class="layout layout--col muni">
+  <div class="columns">
+    <div class="column">
+      <div class="title_bar">
+        <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg" />
+        <span class="title">SF Muni</span>
+        <span class="instance">{{ updated_at }}</span>
+      </div>
+      <table class="table table--gap-s">
+        <thead>
+          <tr>
+            <th>Line</th>
+            <th>Next Departures</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for stop in stops %}
+            <tr>
+              <td colspan="2" style="padding-top: 6px; font-weight: bold;">{{ stop.stop_name }}</td>
+            </tr>
+            {% for line in stop.lines %}
+            <tr>
+              <td class="bold">{{ line.line }}</td>
+              <td>
+                {% if line.departures.size > 0 %}
+                  {% for dep in line.departures limit:3 %}{{ dep.time }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+                {% else %}
+                  --
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
