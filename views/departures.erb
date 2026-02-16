@@ -19,17 +19,19 @@
               <span class="title">SF Muni</span>
               <span class="instance"><%= @updated_at %></span>
             </div>
-            <% @stops.each do |stop| %>
-              <div class="meta" style="margin-top: 8px;"><%= stop[:stop_name] %></div>
-              <table class="table table--gap-s">
-                <thead>
+            <table class="table table--gap-s">
+              <thead>
+                <tr>
+                  <th>Line</th>
+                  <th>Destination</th>
+                  <th>Next Departures</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @stops.each do |stop| %>
                   <tr>
-                    <th>Line</th>
-                    <th>Destination</th>
-                    <th>Next Departures</th>
+                    <td colspan="3" class="bold meta" style="padding-top: 8px;"><%= stop[:stop_name] %></td>
                   </tr>
-                </thead>
-                <tbody>
                   <% stop[:lines].each do |line| %>
                   <tr>
                     <td class="bold"><%= line[:line] %></td>
@@ -43,9 +45,9 @@
                     </td>
                   </tr>
                   <% end %>
-                </tbody>
-              </table>
-            <% end %>
+                <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
