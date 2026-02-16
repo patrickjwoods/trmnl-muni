@@ -19,30 +19,33 @@
               <span class="title">SF Muni</span>
               <span class="instance"><%= @updated_at %></span>
             </div>
-            <table class="table table--gap-s">
-              <thead>
-                <tr>
-                  <th>Route</th>
-                  <th>Direction</th>
-                  <th>Next Departures</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @routes.each do |route| %>
-                <tr>
-                  <td class="bold"><%= route[:route] %></td>
-                  <td><%= route[:direction] %></td>
-                  <td>
-                    <% if route[:departures].any? %>
-                      <%= route[:departures].map { |d| "#{d[:minutes]}m" }.join(", ") %>
-                    <% else %>
-                      --
-                    <% end %>
-                  </td>
-                </tr>
-                <% end %>
-              </tbody>
-            </table>
+            <% @stops.each do |stop| %>
+              <div class="meta" style="margin-top: 8px;"><%= stop[:stop_name] %></div>
+              <table class="table table--gap-s">
+                <thead>
+                  <tr>
+                    <th>Line</th>
+                    <th>Destination</th>
+                    <th>Next Departures</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% stop[:lines].each do |line| %>
+                  <tr>
+                    <td class="bold"><%= line[:line] %></td>
+                    <td><%= line[:destination] %></td>
+                    <td>
+                      <% if line[:departures].any? %>
+                        <%= line[:departures].map { |d| "#{d[:minutes]}m" }.join(", ") %>
+                      <% else %>
+                        --
+                      <% end %>
+                    </td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% end %>
           </div>
         </div>
       </div>

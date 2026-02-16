@@ -1,6 +1,5 @@
 require "spec_helper"
 require "muni_client"
-require "stop_config"
 
 RSpec.describe MuniClient do
   let(:client) { MuniClient.new("test_api_key") }
@@ -56,13 +55,13 @@ RSpec.describe MuniClient do
   end
 
   describe "#fetch_all" do
-    it "deduplicates API calls by stop_id" do
-      stop_routes = StopConfig.parse("6:15726:Downtown;43:15726:Downtown;6:15727:The Haight")
+    it "fetches each stop ID" do
+      stop_ids = ["15726", "15727"]
 
       stub_15726 = stub_stop_request("15726")
       stub_15727 = stub_stop_request("15727")
 
-      results = client.fetch_all(stop_routes)
+      results = client.fetch_all(stop_ids)
 
       expect(stub_15726).to have_been_requested.once
       expect(stub_15727).to have_been_requested.once
@@ -70,12 +69,12 @@ RSpec.describe MuniClient do
     end
 
     it "handles partial failures gracefully" do
-      stop_routes = StopConfig.parse("6:15726:Downtown;43:15727:Downtown")
+      stop_ids = ["15726", "15727"]
 
       stub_stop_request("15726")
       stub_stop_request("15727", status: 500, body: "error")
 
-      results = client.fetch_all(stop_routes)
+      results = client.fetch_all(stop_ids)
 
       expect(results["15726"]).to be_a(Hash)
       expect(results["15727"]).to be_nil

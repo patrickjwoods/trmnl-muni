@@ -4,7 +4,7 @@ require "json"
 
 ENV["RACK_ENV"] = "test"
 ENV["API_KEY_511"] ||= "test_api_key"
-ENV["MUNI_STOPS"] ||= "6:15726:Downtown;43:15726:Downtown"
+ENV["MUNI_STOPS"] ||= "15726"
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 

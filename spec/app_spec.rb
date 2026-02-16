@@ -34,31 +34,21 @@ RSpec.describe "Sinatra App" do
       expect(last_response.content_type).to include("application/json")
     end
 
-    it "returns routes array and updated_at" do
+    it "returns stops array and updated_at" do
       get "/departures.json"
       body = JSON.parse(last_response.body)
-      expect(body).to have_key("routes")
+      expect(body).to have_key("stops")
       expect(body).to have_key("updated_at")
-      expect(body["routes"]).to be_an(Array)
+      expect(body["stops"]).to be_an(Array)
     end
 
-    it "returns departure data for configured routes" do
+    it "returns stop with stop_name and lines" do
       get "/departures.json"
       body = JSON.parse(last_response.body)
-      routes = body["routes"].map { |r| r["route"] }
-      expect(routes).to include("6", "43")
-    end
-
-    it "includes departure minutes and times" do
-      get "/departures.json"
-      body = JSON.parse(last_response.body)
-      route6 = body["routes"].find { |r| r["route"] == "6" }
-      expect(route6["departures"]).to be_an(Array)
-
-      next unless route6["departures"].any?
-      dep = route6["departures"].first
-      expect(dep).to have_key("minutes")
-      expect(dep).to have_key("time")
+      stop = body["stops"].first
+      expect(stop).to have_key("stop_name")
+      expect(stop).to have_key("lines")
+      expect(stop["lines"]).to be_an(Array)
     end
   end
 

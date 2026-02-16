@@ -47,17 +47,13 @@ class MuniClient
     nil
   end
 
-  # Fetches data for all unique stops referenced in stop_routes.
-  # Deduplicates by stop_id to minimize API calls.
+  # Fetches data for all stop IDs.
   # Returns { stop_id => parsed_json_or_nil }
-  def fetch_all(stop_routes)
-    unique_stop_ids = stop_routes.map(&:stop_id).uniq
+  def fetch_all(stop_ids)
     results = {}
-
-    unique_stop_ids.each do |stop_id|
+    stop_ids.each do |stop_id|
       results[stop_id] = fetch_stop(stop_id)
     end
-
     results
   end
 

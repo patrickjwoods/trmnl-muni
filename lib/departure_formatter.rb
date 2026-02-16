@@ -1,30 +1,29 @@
 require "time"
 
 module DepartureFormatter
-  # Transforms raw API data into display-ready departure info.
+  # Transforms raw API data into display-ready departure info grouped by stop and line.
   #
   # raw_data: { stop_id => parsed_json_or_nil } from MuniClient#fetch_all
-  # stop_routes: [StopRoute, ...] from StopConfig.parse
-  # max_departures: max departures per route/direction combo
+  # stop_ids: [String, ...] from StopConfig.parse
+  # max_departures: max departures per line
   #
-  # Returns array of hashes:
-  #   [{ route:, direction:, departures: [{ minutes:, time: }, ...] }, ...]
-  def self.format(raw_data, stop_routes, now: Time.now, max_departures: 3)
-    stop_routes.map do |sr|
-      api_response = raw_data[sr.stop_id]
-      departures = extract_departures(api_response, sr.route, now, max_departures)
+  # Returns array of stop hashes:
+  #   [{ stop_name:, lines: [{ line:, destination:, departures: [{ minutes:, time: }] }] }]
+  def self.format(raw_data, stop_ids, now: Time.now, max_departures: 3)
+    stop_ids.map do |stop_id|
+      api_response = raw_data[stop_id]
+      visits = extract_visits(api_response)
 
-      {
-        route: sr.route,
-        direction: sr.direction_label,
-        departures: departures
-      }
+      stop_name = extract_stop_name(visits, stop_id)
+      lines = group_by_line(visits, now, max_departures)
+
+      { stop_name: stop_name, lines: lines }
     end
   end
 
   private
 
-  def self.extract_departures(api_response, route, now, max_departures)
+  def self.extract_visits(api_response)
     return [] if api_response.nil?
 
     visits = api_response.dig(
@@ -32,26 +31,51 @@ module DepartureFormatter
       "StopMonitoringDelivery",
       "MonitoredStopVisit"
     )
-    return [] unless visits.is_a?(Array)
+    visits.is_a?(Array) ? visits : []
+  end
 
-    matching = visits.select do |visit|
-      visit.dig("MonitoredVehicleJourney", "LineRef") == route
-    end
+  def self.extract_stop_name(visits, stop_id)
+    return "Stop #{stop_id}" if visits.empty?
 
-    departures = matching.filter_map do |visit|
+    visits.first.dig("MonitoredVehicleJourney", "MonitoredCall", "StopPointName") ||
+      "Stop #{stop_id}"
+  end
+
+  def self.group_by_line(visits, now, max_departures)
+    by_line = {}
+
+    visits.each do |visit|
+      journey = visit["MonitoredVehicleJourney"]
+      next unless journey
+
+      line_ref = journey["LineRef"]
+      next unless line_ref
+
       departure_time = parse_departure_time(visit)
       next unless departure_time
 
       minutes = ((departure_time - now) / 60.0).round
       next if minutes < 0
 
-      {
+      by_line[line_ref] ||= {
+        line: line_ref,
+        name: journey["PublishedLineName"] || line_ref,
+        destination: journey["DestinationName"] || journey["DestinationDisplay"] || "",
+        departures: []
+      }
+
+      by_line[line_ref][:departures] << {
         minutes: minutes,
         time: departure_time.getlocal.strftime("%-I:%M %p")
       }
     end
 
-    departures.sort_by { |d| d[:minutes] }.first(max_departures)
+    by_line.values.each do |line_data|
+      line_data[:departures].sort_by! { |d| d[:minutes] }
+      line_data[:departures] = line_data[:departures].first(max_departures)
+    end
+
+    by_line.values.sort_by { |l| l[:departures].first&.[](:minutes) || Float::INFINITY }
   end
 
   def self.parse_departure_time(visit)
