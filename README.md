@@ -1,6 +1,6 @@
 # TRMNL SF Muni Departures
 
-A [TRMNL](https://usetrmnl.com) e-ink display plugin that shows real-time SF Muni departure times. Configure up to 10 route/stop/direction combinations and see the next departures for each on your TRMNL device.
+A [TRMNL](https://usetrmnl.com) e-ink display plugin that shows real-time SF Muni departure times. Configure your stop IDs and see all upcoming departures grouped by line on your TRMNL device.
 
 Powered by the [511.org](https://511.org) real-time transit API.
 
@@ -11,9 +11,7 @@ TRMNL Device  →  TRMNL Cloud  →  This Server  →  511.org API
               ←               ←               ←
 ```
 
-TRMNL Cloud polls your server every ~15 minutes. The server fetches real-time departure data from 511.org, filters it to your configured routes, and returns formatted JSON. TRMNL merges it into the Liquid template and renders it on the e-ink display.
-
-The server deduplicates API calls — if you want routes 6 and 43 at the same stop, that's 1 API call, not 2.
+TRMNL Cloud polls your server every ~15 minutes. The server fetches real-time departure data from 511.org for each configured stop, groups departures by line, and returns formatted JSON. TRMNL merges it into the Liquid template and renders it on the e-ink display.
 
 ## Setup
 
@@ -24,38 +22,38 @@ The server deduplicates API calls — if you want routes 6 and 43 at the same st
 
 ### 2. Find Your Stop IDs
 
-Stop IDs are direction-specific. To find them:
+Each physical stop has a unique numeric ID. To find yours:
 
 1. Visit the [511.org GTFS data](https://511.org/open-data/transit) page
 2. Or use the 511 API directly:
    ```
    https://api.511.org/transit/stops?api_key=YOUR_KEY&operator_id=SF&format=json
    ```
-3. Find the stop codes for your desired stops and directions
+3. Find the stop codes for your desired stops
 
 ### 3. Configure MUNI_STOPS
 
-The `MUNI_STOPS` environment variable defines which routes/stops/directions to display.
-
-**Format:** `route:stop_id:direction_label` separated by semicolons
+The `MUNI_STOPS` environment variable is a semicolon-separated list of stop IDs.
 
 **Examples:**
 ```bash
-# Single route
-MUNI_STOPS="6:15726:Downtown"
+# Single stop
+MUNI_STOPS="15726"
 
-# Multiple routes at the same stop
-MUNI_STOPS="6:15726:Downtown;43:15726:Downtown"
+# Multiple stops
+MUNI_STOPS="15726;15727"
 
-# Multiple stops and directions
-MUNI_STOPS="6:15726:Downtown;6:15727:The Haight;43:15726:Downtown;43:15727:Masonic"
+# Three stops
+MUNI_STOPS="15002;15715;15714"
 ```
+
+No need to specify routes or directions — the API returns all lines serving each stop, and departures are automatically grouped by line.
 
 ### 4. Run Locally
 
 ```bash
 cp .env.example .env
-# Edit .env with your API key and stop config
+# Edit .env with your API key and stop IDs
 
 bundle install
 bundle exec rackup
@@ -73,8 +71,8 @@ Visit:
 3. Connect your GitHub repo
 4. Set environment variables:
    - `API_KEY_511` — your 511.org API key
-   - `MUNI_STOPS` — your route/stop/direction config
-   - `MAX_DEPARTURES` — departures per combo (default: 3)
+   - `MUNI_STOPS` — semicolon-separated stop IDs
+   - `MAX_DEPARTURES` — departures per line (default: 3)
 5. Deploy and verify `/health` returns 200
 
 ### 6. Configure TRMNL
@@ -90,8 +88,8 @@ Visit:
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `API_KEY_511` | Yes | — | Your 511.org API key |
-| `MUNI_STOPS` | Yes | — | Route/stop/direction config string |
-| `MAX_DEPARTURES` | No | `3` | Max departures shown per route |
+| `MUNI_STOPS` | Yes | — | Semicolon-separated stop IDs |
+| `MAX_DEPARTURES` | No | `3` | Max departures shown per line |
 
 ## Development
 
