@@ -23,7 +23,7 @@
               <td>{{ line.destination }}</td>
               <td>
                 {% if line.departures.size > 0 %}
-                  {% for dep in line.departures %}{{ dep.minutes }}m{% unless forloop.last %}, {% endunless %}{% endfor %}
+                  {% for dep in line.departures %}{{ dep.time }}{% unless forloop.last %}, {% endunless %}{% endfor %}
                 {% else %}
                   --
                 {% endif %}

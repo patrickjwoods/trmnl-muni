@@ -36,7 +36,7 @@
                     <td><%= line[:destination] %></td>
                     <td>
                       <% if line[:departures].any? %>
-                        <%= line[:departures].map { |d| "#{d[:minutes]}m" }.join(", ") %>
+                        <%= line[:departures].map { |d| d[:time] }.join(", ") %>
                       <% else %>
                         --
                       <% end %>

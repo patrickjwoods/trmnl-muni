@@ -10,6 +10,6 @@ services:
       - key: MUNI_STOPS
         sync: false
       - key: MAX_DEPARTURES
-        value: "3"
+        value: "5"
       - key: RACK_ENV
         value: production
