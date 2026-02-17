@@ -1,3 +1,5 @@
+ENV["TZ"] = "America/Los_Angeles"
+
 require "sinatra"
 require "json"
 require "time"
